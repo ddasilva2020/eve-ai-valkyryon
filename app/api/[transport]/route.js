@@ -117,7 +117,7 @@ const baseHandler = createMcpHandler(
       }
       return result({ character: { id: ctx.characterId, name: ctx.characterName }, count: rows.length, capabilities: rows });
     });
-
+    if (writeEnabled()) {
     server.registerTool('eve_prepare_action', {
       title: 'Prepare an ESI action',
       description: 'Validate an allowlisted ESI write/UI action and return a short-lived ticket. This tool does not mutate EVE state. The exact ticket must be passed to eve_execute_action to perform the action.',
@@ -146,6 +146,7 @@ const baseHandler = createMcpHandler(
       const ctx = eveContext(extra);
       return result(await executeAction({ ticket, characterId: ctx.characterId, accessToken: ctx.eveAccessToken }));
     });
+    }
   },
   { name: 'eve-esi-llm-bridge', version: '0.1.0' },
   { basePath: '/api' },
